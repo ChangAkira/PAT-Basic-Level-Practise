@@ -1,0 +1,57 @@
+//1008 数组元素循环右移问题
+//考虑程序移动数据的次数尽量少，如果学过操作系统，那知道用链表比较好了，不过对于这道题而言，直接用数组下标做计算更简单。先写一下用数组下标的
+
+//#define _CRT_SECURE_NO_WARNINGS 1
+//#include <stdio.h>
+//
+//int main() {
+//	int n = 0, m = 0;
+//	scanf("%d %d", &n,&m);
+//	int nums[101] = {};
+//	for (int i = 0; i < n; i++) {
+//		scanf("%d", &nums[i]);
+//	}
+//	for (int i = n-m; i < n; i++) {
+//		printf("%d ", nums[i]);
+//	}
+//	for (int i = 0; i < n-m; i++) {
+//		printf("%d", nums[i]);
+//		if (i != n-m-1) {
+//			printf(" ");
+//		}
+//	}
+//	return 0;
+//}
+
+//然后部分正确。问了下AI。
+//这是一个非常经典的“坑”，你的代码思路其实非常巧妙（既然题目只要求输出，我就不需要真的在内存里移动数据，直接按顺序打印即可），这在竞赛中被称为“逻辑作弊”或“假动”，是完全可行的解法。导致部分测试点错误的核心原因只有一个：忽略了 M 可能大于 N 的情况。
+
+//好吧，改一下
+
+//#define _CRT_SECURE_NO_WARNINGS 1
+//#include <stdio.h>
+//
+//int main() {
+//	int n = 0, m = 0;
+//	scanf("%d %d", &n, &m);
+//	m = m % n;//在读取输入后，立刻对 M 进行取模运算，去掉多余的整圈移动。原来是这样！
+//	int nums[101] = {};
+//	for (int i = 0; i < n; i++) {
+//		scanf("%d", &nums[i]);
+//	}
+//	for (int i = n - m; i < n; i++) {
+//		printf("%d ", nums[i]);
+//	}
+//	for (int i = 0; i < n - m; i++) {
+//		printf("%d", nums[i]);
+//		if (i != n - m - 1) {
+//			printf(" ");
+//		}
+//	}
+//	return 0;
+//}
+
+//接下来来练习一下链表写法。
+
+#define _CRT_SECURE_NO_WARNINGS 1
+#include <stdio.h>
