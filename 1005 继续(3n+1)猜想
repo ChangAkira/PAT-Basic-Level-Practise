@@ -1,0 +1,167 @@
+//两种写法，以下是第一种写法，包括一点思考。后面是AI告诉我的更好的做法（针对题目），但我的做法可以顺便练习一下动态数组的写法
+//首先想到的就是先挑出最大的那个数去计算，然后从数列里面进行排除。
+//突然想到如果反过来做呢？从最小的数开始，逆着做运算，然后从数列里面进行排除会不会更简单？可能是这样，我想，因为经验告诉我不管什么数字在做该运算很多次后总是会来到4、2、1这个序列，但似乎也不太对，保险起见我手算一下输入样例看看哪种方法简单
+//手算以后发现，起码就本例来说，确实是从小的数开始算计算次数更少。
+//不，有没有可能这一步并不重要呢？题目并没有说输入是按序的，难道我们还要自己排个序吗？应该没有这个必要，所以算了，我们就按输入的次序做运算就好了。
+
+//所以我们维护几个数列：输入数列，我想附赠一个flag表示是否是关键的。然后，写一个数列包含计算过程中遇到的数，这样就可以在第二个数列里去寻找了。
+//所以说关键点是一个可变长度的数列。当然其实不变长度也完全没问题，因为题目说了只会给出100个以下输入，我可以判断大概起码肯定第二个数列不会超过1000个元素
+//这里写一个线性表
+#define _CRT_SECURE_NO_WARNINGS 1
+#include <stdio.h>
+#include <stdlib.h> // malloc, realloc, free, qsort
+
+#define LIST_INIT_SIZE 100 // 初始容量
+#define LIST_INCREASEMENT 10 // 每次扩容的大小
+
+int search(int num, int* base, int len) {
+    for (int i = 0; i < len; i++) {
+        if (base[i] == num) return 1; // 找到了
+    }
+    return 0; // 没找到
+}
+
+// current_len: 当前存了多少个数 (传入指针，因为要修改它)
+// capacity: 当前数组的总容量 (传入指针，因为要修改它)
+// base_ptr: 数组指针的地址 (传入二级指针，因为 realloc 可能会改变数组的起始地址)
+void insert_num(int num, int* current_len, int* capacity, int** base_ptr) {
+    // 先查重，如果已经有了就不存了
+    if (search(num, *base_ptr, *current_len)) {
+        return;
+    }
+
+    // 检查是否需要扩容
+    if (*current_len >= *capacity) {
+        *capacity += LIST_INCREASEMENT;
+        // realloc 调整内存大小，原数据会被保留
+        int* new_base = (int*)realloc(*base_ptr, (*capacity) * sizeof(int));
+        if (new_base == NULL) {
+            printf("内存分配失败\n");
+            exit(1);
+        }
+        *base_ptr = new_base; // 更新指向新地址
+    }
+
+    // 插入数据
+    (*base_ptr)[*current_len] = num;
+    (*current_len)++; // 长度+1
+}
+
+// 比较函数用于排序
+int cmp(const void* a, const void* b) {  //cmp函数和下面的qsort见https://www.runoob.com/cprogramming/c-function-qsort.html
+    return *(int*)b - *(int*)a; // 从大到小
+}
+
+int main() {
+    // 初始化动态数组
+    int capacity = LIST_INIT_SIZE;
+    int len = 0; // len 表示实际存了多少数
+    int* base = (int*)malloc(capacity * sizeof(int));
+
+    int K;
+    scanf("%d", &K);
+
+    // 先把原始输入存下来
+    int inputs[105];
+    for (int i = 0; i < K; i++) {
+        scanf("%d", inputs[i]);
+    }
+
+    // 开始处理逻辑
+    for (int i = 0; i < K; i++) {
+        int n = inputs[i];
+
+        while (n != 1) {
+            if (n % 2 == 0) {
+                n = n / 2;
+            }
+            else {
+                n = (3 * n + 1) / 2;
+            }
+
+            // 将生成的 n 插入动态数组 (注意传入 &base)
+            insert_num(n, &len, &capacity, &base);
+        }
+    }
+
+    // 筛选结果：遍历原始输入，看谁不在 base 数组里
+    int result[105];
+    int count = 0;
+    for (int i = 0; i < K; i++) {
+        // 如果 inputs[i] 没有在 base 数组里找到，说明它是关键数
+        if (!search(inputs[i], base, len)) {
+            result[count++] = inputs[i];
+        }
+    }
+
+    // 排序并输出
+    qsort(result, count, sizeof(int), cmp);
+    for (int i = 0; i < count; i++) {
+        printf("%d", result[i]);
+        if (i < count - 1) printf(" ");
+    }
+
+    // 释放动态内存
+    free(base);
+
+    return 0;
+}
+//接下来第二种方法，是大概估算过数组2的容量，直接开一个 int mark[5000] 的数组，下标代表数字，值代表是否被覆盖（哈希表的思想）
+
+//#define _CRT_SECURE_NO_WARNINGS 1
+//#include <stdio.h>
+//#include <stdlib.h> // 为了使用 qsort
+//
+//// 比较函数，用于最后的输出排序
+//int cmp(const void* a, const void* b) {
+//    return *(int*)b - *(int*)a; // 从大到小排序
+//}
+//
+//int main() {
+//    int K;
+//    scanf("%d", &K);
+//
+//    int inputs[105];       // 存题目给的原始数字
+//    int mark[5000] = { 0 };  // "标记数组"：mark[n]=1 表示数字 n 被覆盖了
+//
+//    for (int i = 0; i < K; i++) {
+//        scanf("%d", &inputs[i]);
+//    }
+//
+//    for (int i = 0; i < K; i++) {
+//        int n = inputs[i]; // 取出一个数字
+//
+//        while (n != 1) {
+//            if (n % 2 == 0) {
+//                n = n / 2;
+//            }
+//            else {
+//                n = (3 * n + 1) / 2;
+//            }
+//
+//            if (n < 5000) {
+//                mark[n] = 1;
+//            }
+//        }
+//    }
+//
+//    // 如果是原始输入，且 mark 依然是 0，说明它是关键数
+//    int result[105];
+//    int count = 0;
+//    for (int i = 0; i < K; i++) {
+//        // inputs[i] 没有被标记过，说明它是关键数
+//        if (mark[inputs[i]] == 0) {
+//            result[count++] = inputs[i];
+//        }
+//    }
+//
+//    // 从大到小输出
+//    qsort(result, count, sizeof(int), cmp);
+//
+//    for (int i = 0; i < count; i++) {
+//        printf("%d", result[i]);
+//        if (i < count - 1) printf(" ");
+//    }
+//
+//    return 0;
+//}
