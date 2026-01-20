@@ -13,7 +13,7 @@ nAPATnA是正确的，那么nAPATnAnA也是正确的，即nAPAT2nA
 
 归纳法可知，以P、T为分界线，左面的A数量*中间的A数量等于右边的A数量。根据这个条件，再加上一些其它容易想到的条件：P、T都只有一个、没有其它字母、中间至少有一个A即可解题。
 
-#define _CRT_SECURE_NO_WARNINGS 1；  //这是为了在VS里使用scanf函数，不知道的同学就不用管这句
+#define _CRT_SECURE_NO_WARNINGS 1  //这是为了在VS里使用scanf函数，不知道的同学就不用管这句
 
 #include <stdio.h>
 #include <string.h>
