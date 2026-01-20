@@ -64,7 +64,7 @@ int main() {
     // 先把原始输入存下来
     int inputs[105];
     for (int i = 0; i < K; i++) {
-        scanf("%d", inputs[i]);
+        scanf("%d", &inputs[i]);
     }
 
     // 开始处理逻辑
