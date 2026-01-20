@@ -1,5 +1,5 @@
 //这道题有三个核心：1、字符串组成的数组怎么写    2、输入的数这么大，应该用字符串接收    3、字符串与数字互转
-#define _CRT_SECURE_NO_WARNINGS 1；  //这是为了在VS里使用scanf函数，不知道的同学就不用管这句
+#define _CRT_SECURE_NO_WARNINGS 1  //这是为了在VS里使用scanf函数，不知道的同学就不用管这句
 
 #include <stdio.h>
 #include <string.h>
