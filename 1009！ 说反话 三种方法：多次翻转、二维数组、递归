@@ -1,0 +1,88 @@
+//1009 说反话  第一种方法跟上一道非常类似，先全部翻转一次，再每个单词翻转一次，但缺点是接收输入不容易，我也是第一次知道scanf可以用正则表达式，优点是空间复杂度O(1)
+//#define _CRT_SECURE_NO_WARNINGS 1
+//#include <stdio.h>
+//#include<string.h>
+//
+////翻转函数，跟上一道题完全一样。
+//void swapArr(char arr[],int left,int right) {
+//    // 只要左边小于右边，就一直交换并向中间走
+//    while (left < right) {
+//        char temp = arr[left];
+//        arr[left] = arr[right];
+//        arr[right] = temp;
+//
+//        left++;  // 左边往右走
+//        right--; // 右边往左走
+//    }
+//}
+//
+//int main() {
+//	char arr[81] = {};
+//    scanf("%[^\n]", arr);  //%[^\n] 的意思是：读取字符，直到遇到 \n 为止。  gets()也可以，但gets在新标准中已经被废弃了	
+//	int len = strlen(arr);
+//    swapArr(arr, 0, len - 1);
+//    for (int i = 0, last_space=-1; i < len; i++) {//用last_space存一下上一次空格的位置，刚开始可以认为-1的地方有一个空格
+//        if (arr[i] == ' ') {
+//            swapArr(arr, last_space+1, i-1);
+//            last_space = i;
+//        }
+//        if (i == len - 1) {
+//            swapArr(arr, last_space + 1, len - 1);
+//        }
+//
+//    }
+//    printf("%s", arr);
+//
+//	return 0;
+//}
+
+//第二种方法是二维数组
+//#define _CRT_SECURE_NO_WARNINGS 1
+//#include <stdio.h>
+//
+//int main() {
+//    char str[80][80]; // 二维数组：存最多80个单词，每个单词最长80字符
+//    int count = 0;    // 计数器，记录有多少个单词
+//
+//    // 循环读取
+//    while (1) {
+//        scanf("%s", str[count]); // %s 会自动跳过前面的空格，读取单词直到遇到下一个空白
+//        count++;
+//
+//        char c = getchar(); // 读取单词后的那个字符
+//        if (c == '\n') {    // 如果读到的是换行符，说明输入结束
+//            break;
+//        }
+//    }
+//
+//    // 倒序输出
+//    for (int i = count - 1; i >= 0; i--) {
+//        printf("%s", str[i]);
+//        if (i > 0) printf(" ");
+//    }
+//
+//    return 0;
+//}
+
+//还有一种递归的写法，也很有意思
+#define _CRT_SECURE_NO_WARNINGS 1
+#include <stdio.h>
+
+void solve() {
+    char str[90];
+    char c;
+    // 每次读一个单词
+    if (scanf("%s", str) != EOF) {
+        c = getchar(); // 看看单词后面是什么
+        if (c != '\n') {
+            solve();   // 如果不是换行，递归下去读下一个
+            printf(" "); // 递归回来时（倒序）打印空格
+        }
+        printf("%s", str); // 打印当前单词
+    }
+}
+
+int main() {
+    solve();
+    return 0;
+}
