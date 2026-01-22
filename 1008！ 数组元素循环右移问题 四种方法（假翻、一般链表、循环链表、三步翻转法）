@@ -282,3 +282,19 @@ int main() {
 	return 0;
 }
 //这样确实好简单！
+
+//AI看了我的代码以后也很高兴。不过它提出了更好读的意见：使用双指针
+
+//void swapArr(int nums[], int left, int right) {
+//    // 只要左边小于右边，就一直交换并向中间走
+//    while (left < right) {
+//        int temp = nums[left];
+//        nums[left] = nums[right];
+//        nums[right] = temp;
+//
+//        left++;  // 左边往右走
+//        right--; // 右边往左走
+//    }
+//}
+
+//这样可以少写一些算术表达式，减少大脑运算量。的确，这是个好方法
