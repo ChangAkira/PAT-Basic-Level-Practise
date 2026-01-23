@@ -1,4 +1,5 @@
 //1011 A+B 和 C  这道题目何意味？？？签到题吗
+//不过还真有一个有意思的点，请移步https://docs.google.com/document/d/1c6SKc5EbFXLm-L7y0-R27kMif4bmDvwhs2NADpEaUzw/edit?usp=sharing    移项
 // 
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <stdio.h>
