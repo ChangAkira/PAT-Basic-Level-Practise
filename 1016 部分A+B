@@ -1,5 +1,6 @@
 //1016 部分A+B
 //这个很简单咯，简单一算10的9次方用int也能表示。不过还是用string接收更简单！！
+//注意C语言中^是异或的意思不是乘方
 
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <stdio.h>
@@ -23,7 +24,8 @@ int main() {
 			count_b++;
 		}
 	}
-	int sum = 0;
+	//原来这里用的是计算权重weight的方式。有更简单的方法，下面写了秦九韶算法
+	/*int sum = 0;
 	int weight = 1;
 	for (int i = 0; i < count_a; i++) {
 		for (int j = 0; j < i; j++) {
@@ -39,7 +41,15 @@ int main() {
 		}
 		sum += (num_b * weight);
 		weight = 1;
+	}*/
+	int sum_a = 0,sum_b=0,sum=0;
+	for (int temp = 0; temp < count_a; temp++) {
+		sum_a =  sum_a * 10+num_a;
 	}
+	for (int temp = 0; temp < count_b; temp++) {
+		sum_b =  sum_b * 10+num_b;
+	}
+	sum = sum_a + sum_b;
 	printf("%d", sum);
 	return 0;
 }
