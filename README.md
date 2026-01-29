@@ -10,4 +10,3 @@ PAT (Basic Level) Practise（中文） https://pintia.cn/problem-sets/9948052602
 
 部分题目给出了多种解法。
 
-前17道我可能有一些不要的地方没有注释掉。
