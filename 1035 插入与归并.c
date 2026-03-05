@@ -81,11 +81,16 @@ SortType judgeSortType(Node *headNode1, Node *headNode2) { // 升序排列、都
 }
 
 bool insertToList(Node *a1,Node *a2){//把a1插到a2的前面
-
+    Node temp;
+    a1->prior->next=a1->next;
+    a1->next=a2;
+    a1->prior=a2->prior;
+    a2->prior=a1;
+    return true;
 }
 
 bool insertionSort(Node *headnode,  Node *nodeptr) {//进行一次插入排序。要知道是要对哪个元素下手
-
+    while()
 }
 bool mergeSort(Node *headNode) {
 
