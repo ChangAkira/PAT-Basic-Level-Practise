@@ -60,16 +60,29 @@ bool isSame(Node *node1, Node *node2) {
     return true;
 }
 
-SortType judgeSortType(Node *headNode1, Node *headNode2) { // 升序排列、都是正整数，那头结点的0参与进来也无妨
+SortType judgeSortType(Node *headNode1, Node *headNode2,Node *index,int* cnt) { // 升序排列、都是正整数，那头结点的0参与进来也无妨
+    
     Node *node1 = headNode1;
     Node *node2 = headNode2;
     while (node2 != NULL&&node2->next!=NULL) {
         if (node2->next->elem >= node2->elem) {
             node2 = node2->next;
             node1 = node1->next;
+            (*cnt)++;
         } else {
             node2 = node2->next;
             node1 = node1->next;
+            Node* nodetemp=node2;
+            int cnttemp=0;
+            while(nodetemp!=NULL){
+                for(cnttemp=0;nodetemp->next->elem>=nodetemp->elem&&nodetemp!=NULL;nodetemp=nodetemp->next,cnttemp++){
+
+                }
+                if(cnttemp<*cnt){
+                    *cnt=cnttemp;//归并段长度
+                }
+                
+            }
             break;
         }
     }
@@ -78,6 +91,7 @@ SortType judgeSortType(Node *headNode1, Node *headNode2) { // 升序排列、都
     } else {
         return Merge_Sort;
     }
+    index=node2;
 }
 
 bool insertToList(Node *a1,Node *a2){//把a1插到a2的前面
@@ -90,9 +104,14 @@ bool insertToList(Node *a1,Node *a2){//把a1插到a2的前面
 }
 
 bool insertionSort(Node *headnode,  Node *nodeptr) {//进行一次插入排序。要知道是要对哪个元素下手
-    while()
+    Node* nodetemp=nodeptr;
+while(nodetemp!=headnode->next && nodetemp->elem<=nodetemp->prior->elem){
+        nodetemp=nodetemp->prior;
+    }
+    insertToList(nodeptr,nodetemp);
 }
-bool mergeSort(Node *headNode) {
+
+bool mergeSort(Node *headNode,int n) {
 
 }
 
@@ -106,16 +125,14 @@ int main() {
     Node headNode2 = {NULL, 0, NULL};
     Node *tailNode2 = &headNode2;
     addNElem(tailNode2, cnt);
-
-    if (judgeSortType(&headNode1, &headNode2) == Insertion_Sort) {
+    Node* index;
+    cnt=0;
+    if (judgeSortType(&headNode1, &headNode2,index,&cnt) == Insertion_Sort) {
         printf("Insertion Sort\n");
-        insertionSort(&headNode1);
+        insertionSort(&headNode1,index);
     } else {
         printf("Merge Sort\n");
-        while (!isSame(&headNode1, &headNode2)) {
-            mergeSort(&headNode1);
-        }
-        mergeSort(&headNode1);
+        mergeSort(&headNode1,cnt*2);
     }
 
     printChainList(&headNode1);
